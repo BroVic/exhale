@@ -10,18 +10,20 @@ output:
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "README-"
+  fig.path = "README-",
+  eval = FALSE
 )
 ```
 
 # exhale [![Travis-CI Build Status](https://travis-ci.org/<USERNAME>/<REPO>.svg?branch=master)](https://travis-ci.org/<USERNAME>/<REPO>)
 
-The goal of exhale is to ...
+The goal of exhale is to find creative ways of easing the pains of R users working with Excel files - a common task area in data science.
 
-## Example
+## Installation
 
-This is a basic example which shows you how to solve a common problem:
+To install the package execute the following code inside an R session:
 
 ```{r example}
-## basic example code
+if (!requireNamespace("devtools")) install.packages("devtools")
+devtools::install_github("DevSolutionsLtd/exhale")
 ```
