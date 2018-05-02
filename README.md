@@ -1,29 +1,15 @@
----
-output:
-  md_document:
-    variant: markdown_github
----
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-```{r, echo = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "README-",
-  eval = FALSE
-)
-```
-
-# exhale [![Travis-CI Build Status](https://travis-ci.org/<USERNAME>/<REPO>.svg?branch=master)](https://travis-ci.org/<USERNAME>/<REPO>)
+exhale [![Travis-CI Build Status](https://travis-ci.org/%3CUSERNAME%3E/%3CREPO%3E.svg?branch=master)](https://travis-ci.org/%3CUSERNAME%3E/%3CREPO%3E)
+======================================================================================================================================================
 
 The goal of exhale is to find creative ways of easing the pains of R users working with Excel files - a common task area in data science.
 
-## Installation
+Installation
+------------
 
 To install the package execute the following code inside an R session:
 
-```{r example}
+``` r
 if (!requireNamespace("devtools")) install.packages("devtools")
 devtools::install_github("DevSolutionsLtd/exhale")
 ```
