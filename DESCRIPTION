@@ -1,14 +1,14 @@
 Package: exhale
 Title: Makes Working with MS Excel a Little Easier
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: person("Victor", "Ordu", email = "victorordu@outlook.com",
     role = c("aut", "cre"))
-Description: The package reads Microsoft Excel files and does all kinds of 
-    operations with them.
+Description: Read Microsoft Excel files and does all kinds of operations with
+    them.
 Depends: R (>= 3.4)
 Imports:
     readxl (>= 1.0.0)
-License: What license is it under?
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Suggests: testthat
