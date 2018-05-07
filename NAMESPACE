@@ -2,5 +2,6 @@
 
 export(collate_excel)
 export(excelFile)
+export(locate_header)
 importFrom(readxl,excel_sheets)
 importFrom(readxl,read_excel)
