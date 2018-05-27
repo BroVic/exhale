@@ -30,9 +30,10 @@ collate_excel <- function(dir, dest = NULL, verbose = TRUE)
     stop(paste("Directory", sQuote(dest), "does not exist"))
   }
 
-  if (verbose)
+  if (verbose) {
     cat("Root directory for this search is", sQuote(dir), ":\n\n")
-  cat("R is building the directory list. Please wait...\n")
+    cat("R is building the directory list. Please wait...\n")
+  }
   dirLst <- normalizePath(list.dirs(dir), winslash = slsh, mustWork = TRUE)
 
   ## We're getting the absolute path of Excel files that exist in the
