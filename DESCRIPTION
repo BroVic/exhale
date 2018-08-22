@@ -1,6 +1,6 @@
 Package: exhale
 Title: Makes Working with MS Excel a Little Easier
-Version: 0.0.2
+Version: 0.1.0.9000
 Authors@R: person("Victor", "Ordu", email = "victorordu@outlook.com",
     role = c("aut", "cre"))
 Description: Read Microsoft Excel files and does all kinds of operations with
