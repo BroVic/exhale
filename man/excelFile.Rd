@@ -7,11 +7,15 @@
 \usage{
 excelfile(file)
 
-\method{print}{excelfile}(xlObj)
+\method{print}{excelfile}(x, ...)
 }
 \arguments{
 \item{file}{A character vector of length \code{1} representing a path to an
 MS Excel file.}
+
+\item{x}{An object of class 'excelfile'}
+
+\item{...}{Other parameters}
 }
 \value{
 An object of class \emph{excelfile}. This object is essentially a

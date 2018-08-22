@@ -65,13 +65,16 @@ excelfile <- function(file) {
 
 
 #' S3 method for class 'excelFile'
+#'
+#' @param x An object of class 'excelfile'
+#' @param ... Other parameters
 #' @export
 #' @rdname excelfile
-print.excelfile <- function(xlObj) {
+print.excelfile <- function(x, ...) {
   cat(sprintf(
     "Filename: %s\nNo. of sheets: %d\n",
-    xlObj$fileName,
-    xlObj$noOfSheets
+    x$fileName,
+    x$noOfSheets
   ))
 }
 
