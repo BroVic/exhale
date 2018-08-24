@@ -3,8 +3,8 @@
 context("Spreadsheet operations")
 
 test_that("Headers can be identified", {
-  xlObj <- excelFile("test-dir/test-file-2.xlsx")
-  df <- xlObj$contents[[1]]
+  xlObj <- excelfile("test-dir/test-file-2.xlsx")
+  df <- xlObj$data[[1]]
   header <-
     c("name",
       "email",

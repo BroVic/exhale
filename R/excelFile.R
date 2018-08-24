@@ -1,38 +1,58 @@
-#' Excel file objects
+#' excelfile S3 Object
 #'
-#' Constructs S3 objects of class 'excelFile', which contain
-#' properties associated with .xls/.xlsx files
+#' Constructs S3 objects of class 'excelfile', which contain properties
+#' associated with .xls/.xlsx files.
 #'
-#' @param file Path to an MS Excel file
+#' @param file A character vector of length \code{1} representing a path to an
+#' MS Excel file.
+#'
+#' @return An object of class \emph{excelfile}. This object is essentially a
+#' list with the following elements:
+#' \itemize{
+#'   \item fileName: The full file name (including extension)
+#'   \item fileSize: The size of the file (in bytes)
+#'   \item created: The time the file was created
+#'   \item modified: The time the file was last modified
+#'   \item noOfSheets: The number of (active) spreadsheets
+#'   \item sheets: Names of the spreadsheets
+#'   \item data: A list of data frames, one for each spreadsheet
+#' }
 #'
 #' @importFrom readxl excel_sheets
 #' @importFrom readxl read_excel
 #'
 #' @export
-excelFile <- function(file)
-{
-  if(!grepl(".xls$|.xlsx$", file))
-    stop("Expected an MS Excel file with '.xls' or '.xlsx' extension.")
-  sheetNames <- excel_sheets(file)
-  sheetList <- lapply(sheetNames, function(sht) {
-    read_excel(path = file,
-               sheet = sht,
-               col_types = "text")
-  })
+excelfile <- function(file) {
+  if (!is.character(file))
+    stop("Expected a character vector")
+  if (length(file) > 1) {
+    file <- file[1]
+    warning('Only the first element in "file" was used and the rest discarded')
+  }
+  if (!file.exists(file))
+    stop("Path 'file' does not exist")
+  if (!grepl('.xls$|.xlsx$', file))
+    stop("Expected a file with extension '.xls' or '.xlsx'")
+
+  ## Identify individual spreadsheets
+  sheetNames <-  readxl::excel_sheets(file)
+  sheetList <- lapply(sheetNames, function(sht) {    # TODO: Use sheet names
+    readxl::read_excel(path = file, sheet = sht, col_types = "text")})
   prop <- file.info(file)
-  invisible(structure(
+  structure(
     list(
-      filename = basename(file),
-      file.size = prop$size,
+      fileName = basename(file),
+      location = dirname(file),
+      fileSize = prop$size,
       created = prop$ctime,
       modified = prop$mtime,
-      accessed = prop$atime,
-      no.of.sheets = length(sheetNames),
-      sheet.names= sheetNames,
-      contents = sheetList
+      imported = Sys.time(),
+      noOfSheets = length(sheetNames),
+      sheets = sheetNames,
+      data = sheetList
     ),
-    class = "excelFile"
-  ))
+    class = "excelfile"
+  )
   # TODO: Apply some limits.
 }
 
@@ -43,50 +63,34 @@ excelFile <- function(file)
 
 
 
-#' Find a Header
-#'
-#' Discover the likely location of a header in an Excel spreadsheet
-#'
-#' @details Finds the row that likely contains the actual header
-#' @return Returns an S3 object that is a marker to the row it occupies
-#'
-#' @param df An object of class \code{data.frame}
-#' @param hdr A character vector containing the expected header values
-#' @param quietly logical; whether to print out progress or not
-#'
-#' @export
-locate_header <- function(df, hdr, quietly = TRUE) {
-  if (!inherits(df, "data.frame"))
-    stop("'df' is not a valid data frame")
-  if (!is.character(hdr))
-    stop("'hdr' is not a character vector")
 
-  ## Iterate row-wise
-  val <- NULL
-  for (i in 1:nrow(df)) {
-    ## Check whether we hit something that looks like column names
-    ## and when we do, stop looking.
-    if (any(tolower(hdr) %in% tolower(df[i, ]))) {
-      if (!quietly) {
-        cat(
-          paste0(
-            "\tA header candidate was found on row ",
-            i,
-            ":\n\t"
-          ),
-          sQuote(df[i, ]),
-          "\n"
-        )
-      }
-      hdr <- as.character(df[i,])
-      val <- structure(list(
-        header = hdr,
-        rownum = i,
-        nextrow = i + 1
-      ),
-      class = "header-locator")
-      break
-    }
-  }
-  invisible(val)
+#' S3 method for class 'excelFile'
+#'
+#' @param x An object of class 'excelfile'
+#' @param ... Other parameters
+#' @export
+#' @rdname excelfile
+print.excelfile <- function(x, ...) {
+  cat(sprintf(
+    "Filename: %s\nNo. of sheets: %d\n",
+    x$fileName,
+    x$noOfSheets
+  ))
 }
+
+
+
+## TODO: S3 method to provide a summary of the object
+# summary.excelfile <- function(xlobj) {
+#     cat(paste0(
+#         "File: ",
+#         sQuote(xlObj$fileName),
+#         ". Size:",
+#         xlObj$fileSize,
+#         "B\n"
+#     ))
+#     cat("Spreadsheet(s):\n")
+#     for (i in 1:xlObj$noOfSheets) {
+#         cat(paste0(i, ". ", sQuote(xlObj$sheets), "\n"))
+#     }
+# }
